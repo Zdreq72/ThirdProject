@@ -5,10 +5,8 @@
 
 
 
----
 
-
-## 🚀 Features List..
+## 🚀 Features List....
 
 
 * **User Authentication & Authorization:** Secure registration, login, and logout with support for different user roles (Admin, User, Property Owner).
