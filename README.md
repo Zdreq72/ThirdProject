@@ -3,6 +3,8 @@
 ## Project Description
 **Saudi Estate** is a web-based real estate platform built with Django. It allows users to browse, filter, and explore property listings, while also enabling verified users to upload and manage their own properties. The platform focuses on clean UI/UX, document verification (title deed, ownership proof), responsive design, and seamless user interaction to bridge the gap between property owners and seekers.
 
+
+
 ---
 
 ## 🚀 Features List
