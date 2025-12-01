@@ -37,7 +37,7 @@
 ## 📊 UML Diagram
 
 The system involves the following key entities and their relationships.
-Full Diagram: [📄 UML Diagram File](docs/uml_diagram.md)
+Full Diagram: [📄 UML Diagram File](CLASS_DIAGRAM.png)
 
 **Key Models:**
 * `User` (AbstractUser extension or OneToOne link)
