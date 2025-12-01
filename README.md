@@ -7,7 +7,7 @@
 
 ---
 
-## 🚀 Features List.
+## 🚀 Features List....
 
 * **User Authentication & Authorization:** Secure registration, login, and logout with support for different user roles (Admin, User, Property Owner).
 * **Property Owner Mode:** Users can upload, edit, and delete their own property listings directly through a dashboard.
