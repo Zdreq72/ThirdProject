@@ -1,36 +1,25 @@
 {% extends 'base.html' %}
 
-{% block title %}Welcome{% endblock %}
 
 {% block content %}
-<section class="hero-section container">
-    
-    <div class="text-center position-relative" style="z-index: 2;">
-        <p class="hero-subtitle text-uppercase">The National Champion of Destination Real Estate</p>
-        <h1 class="hero-title">Building the Difference</h1>
-    </div>
 
-    <div class="row align-items-end mt-5 position-relative" style="z-index: 2;">
-        
-        <div class="col-lg-5 mb-4 mb-lg-0">
-            <h2 class="hero-desc mb-4">Shaping Immersive Places, Elevating People, Inspiring Life</h2>
-            <div class="d-flex align-items-center gap-3">
-                <a href="#" class="btn-circle-arrow">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-                <a href="#" class="btn-primary-custom text-decoration-none">LEARN MORE</a>
-            </div>
-        </div>
+<section class="hero-section">
 
-        <div class="col-lg-3"></div>
+    <div class="hero-content">
+        <p class="hero-subtitle">Find Your Next Dream Home</p>
 
+        <h1 class="hero-title">
+            Discover <span>Your Perfect</span><br>
+            Home Today
+        </h1>
 
-    </div>
+        <p class="hero-description">
+            Explore modern properties tailored for comfort, luxury, and lifestyle.
+        </p>
 
-    <div class="graphic-circle d-none d-lg-flex">
-        <div class="graphic-inner"></div>
-        <div class="graphic-inner" style="transform: rotate(20deg); width: 240px; height: 240px; border-color: rgba(46,111,94,0.2);"></div>
+        <a href="#" class="hero-btn">EXPLORE NOW →</a>
     </div>
 
 </section>
-{% endblock %}
+
+{% endblock content %}
