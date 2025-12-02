@@ -172,6 +172,95 @@ html {
 }
 
 
+/* Featured section container */
+.featured-section {
+    padding: 60px 40px;
+    margin-top: 60px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Title */
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #0d3c3c;
+}
+
+/* Grid layout for property cards */
+.properties-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+/* Each property card */
+.property-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 0;
+    box-shadow: 0 4px 22px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: 0.25s ease;
+}
+
+/* Hover animation */
+.property-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* Image area (placeholder for now) */
+.property-image {
+    height: 180px;
+    background: #dce2e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 1.2rem;
+}
+
+/* Text area */
+.property-info {
+    padding: 15px 18px;
+    text-align: left;
+}
+
+.price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #009688;
+    margin-bottom: 6px;
+}
+
+.type {
+    font-size: 1rem;
+    margin-bottom: 4px;
+    color: #0d3c3c;
+}
+
+.details {
+    opacity: 0.65;
+    font-size: 0.9rem;
+}
+
+/* Responsive cards for mobile */
+@media (max-width: 900px) {
+    .properties-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .properties-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 /* Basic entrance animations */
 @keyframes fadeIn {
     from {
@@ -247,3 +336,106 @@ html {
         line-height: 1.2;
     }
 }
+
+
+/* Search Bar */
+.search-wrapper {
+    max-width: 750px;
+    margin: 0 auto 40px auto;
+    display: flex;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.search-input {
+    flex: 1;
+    padding: 14px 18px;
+    border: none;
+    font-size: 1rem;
+}
+
+.search-btn {
+    padding: 0 22px;
+    background: #009688;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.view-all-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #009688;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.view-all-btn:hover {
+    text-decoration: underline;
+}
+
+
+/* Overview Section */
+.overview-section {
+    max-width: 900px;
+    margin: 80px auto 40px auto;
+    text-align: center;
+}
+
+.overview-section h2 {
+    font-size: 2rem;
+    color: #0d3c3c;
+    margin-bottom: 15px;
+}
+
+.overview-section p {
+    font-size: 1.1rem;
+    color: #455;
+    line-height: 1.7;
+}
+
+/* View All Button - Modern Animated Style */
+.view-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    color: #009688;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    padding: 10px 18px;
+    border-radius: 30px;
+
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+/* Arrow animation */
+.view-all-btn::after {
+    content: "→";
+    margin-left: 6px;
+    transition: 0.3s ease;
+    position: relative;
+    top: 1px;
+}
+
+/* Hover effect */
+.view-all-btn:hover {
+    color: #ffffff;
+    background: #009688;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 150, 136, 0.25);
+    text-decoration: none;
+}
+
+/* Move arrow a little on hover */
+.view-all-btn:hover::after {
+    transform: translateX(4px);
+}
+
