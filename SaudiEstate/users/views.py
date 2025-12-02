@@ -10,39 +10,59 @@ def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
-        phone = request.POST.get('phone_number')
+
+        # -------- New code: country code + phone number --------
+        country_code = request.POST.get('country_code')
+        phone_local = request.POST.get('phone_number')
+
+        # Avoid errors if one of the fields is missing
+        if country_code and phone_local:
+            full_phone = f"{country_code}{phone_local}"
+        else:
+            full_phone = phone_local  # fallback
+
+        # -------------------------------------------------------
+
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
 
-        
-        
-        
+        # Check password match
         if password != confirm_password:
             messages.error(request, "Passwords do not match!")
             return redirect('users:register')
-        
-        
+
+        # Check if username exists
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already taken!")
             return redirect('users:register')
 
+        # Check if email exists
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already registered!")
             return redirect('users:register')
+
         try:
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.phone_number = phone 
+            # Create the user
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+
+            # Save the full phone number
+            user.phone_number = full_phone
             user.save()
 
             messages.success(request, f"Account created for {username}!")
             return redirect('users:login')
-            
+
         except Exception as e:
             messages.error(request, "Something went wrong during registration.")
             print(e)
             return redirect('users:register')
 
     return render(request, 'users/register.html')
+
 
 
 def login_user(request):
