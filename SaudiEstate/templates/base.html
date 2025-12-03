@@ -11,24 +11,47 @@
 
 <body>
 
+
+
+
     <!-- NAVBAR -->
     <div class="navbar-wrapper">
         <nav class="navbar">
+
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <!-- Left -->
             <div class="nav-left">
-                <span class="nav-logo">SaudiEstate</span>
+                <a href="{% url 'main:home' %}" class="nav-logo">SaudiEstate</a>
             </div>
 
+            <!-- Center -->
             <ul class="nav-center">
-                <li><a href="#">Home</a></li>
+                <li><a href="{% url 'main:home' %}">Home</a></li>
                 <li><a href="#">Properties</a></li>
                 <li><a href="#">About</a></li>
             </ul>
 
+            <!-- Right -->
             <div class="nav-right">
-                <a class="btn-login" href="{% url 'users:register' %}">Sign up</a>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'users:logout' %}" class="btn-login">Logout</a>
+                <h3>Welcome, {{ user.username }}</h3>
+                {% else %}
+                <a href="{% url 'users:login' %}" class="btn-login">Login</a>
+                {% endif %}
+
             </div>
+
         </nav>
     </div>
+
 
     {% block content %}{% endblock %}
 
