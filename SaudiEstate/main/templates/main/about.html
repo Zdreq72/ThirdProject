@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About SaudiEstate{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO SECTION ================= -->
+{% load static %}
+
+<!-- =================== ABOUT HERO =================== -->
+<section class="about-hero">
+
+    <div class="about-hero-overlay"></div>
+
+    <div class="about-hero-content">
+        <p class="about-breadcrumb">Home / About</p>
+        <h1 class="about-title">We Are <span>SaudiEstate</span></h1>
+    </div>
+
+</section>
+
+
+<!-- ================= VISION SECTION ================= -->
+<section class="vision-section">
+    <div class="vision-text">
+        <h2>Building the Future of Real Estate</h2>
+        <p>
+            SaudiEstate is a modern platform designed to transform the real-estate experience in the Kingdom.
+            With innovative tools, trusted listings, and a user-first journey, we aim to elevate the property
+            market with transparency and reliability.
+        </p>
+    </div>
+
+    <div class="vision-img">
+        <img src="{% static 'images/about-main.jpg' %}" alt="SaudiEstate Vision">
+    </div>
+</section>
+
+
+<!-- ================= STORY SECTION ================= -->
+<section class="story-section">
+    <h2 class="section-heading">Our Story</h2>
+
+    <div class="story-grid">
+        <img src="{% static 'images/story1.jpg' %}" class="story-img" alt="">
+        <img src="{% static 'images/story2.jpg' %}" class="story-img" alt="">
+        <img src="{% static 'images/story3.jpg' %}" class="story-img" alt="">
+    </div>
+
+    <p class="story-text">
+        Since our beginnings, SaudiEstate has been committed to empowering home seekers and property investors
+        across Saudi Arabia with verified listings, advanced search tools, and an experience built around trust.
+    </p>
+</section>
+
+
+<!-- ================= VALUES ================= -->
+<section class="values-section">
+    <h2 class="section-heading">Our Values</h2>
+
+    <div class="values-grid">
+
+        <div class="value-card">
+            <span class="icon">🔍</span>
+            <h3>Transparency</h3>
+            <p>Every listing is verified to ensure clarity and trust between buyers and sellers.</p>
+        </div>
+
+        <div class="value-card">
+            <span class="icon">🏡</span>
+            <h3>Quality</h3>
+            <p>We highlight premium homes and properties that meet the highest standards.</p>
+        </div>
+
+        <div class="value-card">
+            <span class="icon">🚀</span>
+            <h3>Innovation</h3>
+            <p>Smart search, AI recommendations, and modern tools for smooth navigation.</p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ================= CTA ================= -->
+<section class="cta-section">
+    <h2>Ready to Start Your Journey?</h2>
+    <a class="cta-btn" href="#">Contact Us →</a>
+</section>
+
+{% endblock %}

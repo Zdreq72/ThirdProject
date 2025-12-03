@@ -24,3 +24,8 @@ def home(request):
 
 def all_properties(request):
     return render(request, 'main/all_properties.html')
+
+
+def about(request):
+    return render(request, "main/about.html")
+

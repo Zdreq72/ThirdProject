@@ -1,0 +1,236 @@
+/* ================= ABOUT HERO ================= */
+
+.about-hero {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    background: url('../images/about-hero.jpg') center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Dark overlay like ROSHN */
+.about-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(1px);
+}
+
+/* Text container */
+.about-hero-content {
+    position: relative;
+    text-align: center;
+    color: #fff;
+    opacity: 0;
+    animation: fadeUp 1.3s ease forwards;
+}
+
+/* Breadcrumb */
+.about-breadcrumb {
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    opacity: 0.85;
+}
+
+/* Main title */
+.about-title {
+    font-size: 4rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+.about-title span {
+    font-weight: 600;
+    color: #00c7a6;
+    /* لون خاص جميل */
+}
+
+
+/* ===== Animation ===== */
+
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ===== VISION SECTION ===== */
+.vision-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    margin: 80px 0;
+    padding: 20px;
+}
+
+.vision-text {
+    width: 50%;
+}
+
+.vision-text h2 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    color: #003c37;
+}
+
+.vision-text p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+.vision-img img {
+    width: 500px;
+    height: 330px;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    animation: floatImg 1.4s ease-out;
+}
+
+
+/* ===== STORY SECTION ===== */
+.story-section {
+    text-align: center;
+    margin: 100px 0;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #003c37;
+}
+
+.story-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.story-img {
+    width: 30%;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 18px;
+    animation: fadeIn 1.2s ease-out;
+}
+
+.story-text {
+    width: 70%;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: #555;
+}
+
+
+/* ===== VALUES SECTION ===== */
+.values-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.value-card {
+    background: #fff;
+    padding: 25px;
+    width: 300px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.value-card .icon {
+    font-size: 2.2rem;
+}
+
+.value-card h3 {
+    margin-top: 15px;
+    color: #003c37;
+}
+
+.value-card p {
+    margin-top: 8px;
+    color: #555;
+}
+
+
+/* ===== CTA ===== */
+.cta-section {
+    text-align: center;
+    margin: 90px 0;
+}
+
+.cta-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #003c37;
+}
+
+.cta-btn {
+    padding: 12px 25px;
+    background: #00a88f;
+    color: #fff;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.cta-btn:hover {
+    background: #007f6b;
+}
+
+
+/* ===== Animations ===== */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes floatImg {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
