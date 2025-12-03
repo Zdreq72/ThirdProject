@@ -51,35 +51,26 @@
 
     <div class="properties-grid">
 
-        <!-- Property Card 1 -->
+      {% for property in properties %}
         <div class="property-card">
-            <div class="property-image">IMAGE</div>
-            <div class="property-info">
-                <p class="price">$450,000</p>
-                <p class="type">Modern House</p>
-                <p class="details">3 bed • 2 bath</p>
+            {% if property.main_image %}
+                <img src="{{ property.main_image.url }}" alt="{{ property.title }}" class="property-image" style="width: 100%; height: 200px; object-fit: cover;">
+            {% else %}
+                <div class="property-image" style="height: 200px; background: #eee; display:flex; align-items:center; justify-content:center;">No Image</div>
+            {% endif %}
+            
+            <div class="property-info" style="padding: 15px;">
+                <p class="price" style="color: #009688; font-weight: bold;">{{ property.price }} SAR</p>
+                <h3 class="type" style="margin: 5px 0; font-size: 1.1rem;">{{ property.title }}</h3>
+                <p class="details text-muted">
+                    📍 {{ property.city }} | 🛏️ {{ property.rooms }} bds | 🛁 {{ property.bathrooms }} ba
+                </p>
+                <a href="#" class="btn btn-sm btn-outline-dark mt-2" style="border-radius: 20px;">View Details</a>
             </div>
         </div>
-
-        <!-- Property Card 2 -->
-        <div class="property-card">
-            <div class="property-image">IMAGE</div>
-            <div class="property-info">
-                <p class="price">$625,000</p>
-                <p class="type">Luxury Apartment</p>
-                <p class="details">4 bed • 3 bath</p>
-            </div>
-        </div>
-
-        <!-- Property Card 3 -->
-        <div class="property-card">
-            <div class="property-image">IMAGE</div>
-            <div class="property-info">
-                <p class="price">$380,000</p>
-                <p class="type">Cozy Home</p>
-                <p class="details">2 bed • 2 bath</p>
-            </div>
-        </div>
+        {% empty %}
+            <p>No featured properties available at the moment.</p>
+        {% endfor %}
 
     </div>
 
