@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Inquiry, VisitRequest
 
-# Register your models here.
+admin.site.register(Inquiry)
+admin.site.register(VisitRequest)
