@@ -18,6 +18,7 @@
 
 
 
+
     <div class="navbar-wrapper">
         <nav class="navbar">
 
@@ -28,9 +29,11 @@
                 {% endfor %}
             </div>
             {% endif %}
+
             <div class="nav-left">
                 <a href="{% url 'main:home' %}" class="nav-logo">SaudiEstate</a>
             </div>
+
 
             <ul class="nav-center">
                 <li><a href="{% url 'main:home' %}">Home</a></li>
@@ -38,7 +41,11 @@
                 <li><a href="{% url 'main:about' %}">About</a></li>
             </ul>
 
+
             <div class="nav-right">
+                <a href="{% url 'properties:add_property' %}" class="btn-add-property">
+                    <i class="fa-solid fa-plus"></i> Add Property
+                </a>
 
                 {% if user.is_authenticated %}
                 <a href="{% url 'users:profile' %}" class="btn-login">My Profile</a>
@@ -57,6 +64,7 @@
     {% block content %}{% endblock %}
 
     <script>
+
         let lastScroll = 0;
         const navbarWrapper = document.querySelector(".navbar-wrapper");
 
@@ -74,6 +82,7 @@
     </script>
 
     <script>
+
         setTimeout(function () {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
@@ -82,8 +91,8 @@
 
                 setTimeout(() => {
                     alert.remove();
-                    }, 600); 
-                });
+                }, 600); 
+            });
         }, 3000);
     </script>
 

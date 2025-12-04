@@ -1,9 +1,11 @@
+
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404 , redirect
 from .models import Property
 from django.db.models import Q
 from .models import Favorite
 from django.contrib.auth.decorators import login_required
+
 
 
 def property_detail(request, pk):
@@ -51,7 +53,48 @@ def remove_favorite(request, fav_id):
     return redirect('users:profile')
 
 
-def is_favorited_by(self, user):
-    return self.favorite_set.filter(user=user).exists()
 
 
+
+def add_property(request):
+
+    if request.method == 'POST':
+
+        if not request.user.is_authenticated:
+            messages.error(request, "Please login to add a property.")
+            return redirect('users:login')
+
+        try:
+            new_property = Property(
+                owner=request.user,
+                title=request.POST.get('title'),
+                description=request.POST.get('description'),
+                city=request.POST.get('city'),
+                district=request.POST.get('district'),
+                location=request.POST.get('location'),
+                price=request.POST.get('price'),
+                area=request.POST.get('area'),
+                rooms=request.POST.get('rooms'),
+                bathrooms=request.POST.get('bathrooms'),
+                age=request.POST.get('age'),
+                property_type=request.POST.get('property_type'),
+                
+                main_image=request.FILES.get('main_image'),
+                title_deed=request.FILES.get('title_deed'),
+                ownership_proof=request.FILES.get('ownership_proof'),
+                building_license=request.FILES.get('building_license')
+            )
+            new_property.save()
+            messages.success(request, "Property submitted successfully! Pending approval.")
+            return redirect('main:home')
+            
+        except Exception as e:
+            print(e)
+            messages.error(request, "Error adding property. Please check your inputs.")
+
+
+    context = {
+        'cities': Property.CITIES,
+        'types': Property.PROPERTY_TYPE_CHOICES
+    }
+    return render(request, 'properties/add_property.html', context)

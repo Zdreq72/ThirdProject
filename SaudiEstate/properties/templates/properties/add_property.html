@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}List Your Property{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper" style="padding-top: 140px; padding-bottom: 80px; height: auto;">
+    
+    <div class="auth-container">
+        
+        {% if user.is_authenticated %}
+            
+            <div class="auth-header text-center mb-5">
+                <h2 class="text-white">List Your Property</h2>
+                <p class="text-white-50">Fill in the details to reach thousands of potential buyers.</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" class="property-form">
+                {% csrf_token %}
+                
+                <h4 class="form-section-title"><i class="fa-regular fa-file-lines"></i> Basic Information</h4>
+                
+                <div class="form-group">
+                    <label>Property Title</label>
+                    <input type="text" name="title" placeholder="e.g. Luxury Villa in North Riyadh" required class="input-glass">
+                </div>
+
+                <div class="form-row-grid">
+                    <div class="form-group">
+                        <label>Property Type</label>
+                        <select name="property_type" required class="dark-input">
+                            <option value="" disabled selected>Select Type</option>
+                            {% for value, label in types %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (SAR)</label>
+                        <input type="number" name="price" placeholder="0.00" step="0.01" required class="input-glass">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="4" placeholder="Describe key features..." required class="input-glass"></textarea>
+                </div>
+
+                <h4 class="form-section-title mt-4"><i class="fa-solid fa-location-dot"></i> Location</h4>
+                
+                <div class="form-row-grid">
+                    <div class="form-group">
+                        <label>City</label>
+                        <select name="city" required class="dark-input">
+                            <option value="" disabled selected>Select City</option>
+                            {% for value, label in cities %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>District</label>
+                        <input type="text" name="district" placeholder="e.g. Al Malqa" required class="input-glass">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Google Maps Link</label>
+                    <input type="url" name="location" placeholder="https://maps.google.com/..." class="input-glass">
+                </div>
+
+                <h4 class="form-section-title mt-4"><i class="fa-solid fa-layer-group"></i> Property Details</h4>
+                
+                <div class="form-row-grid four-cols">
+                    <div class="form-group">
+                        <label>Area (m²)</label>
+                        <input type="number" name="area" required class="input-glass">
+                    </div>
+                    <div class="form-group">
+                        <label>Rooms</label>
+                        <input type="number" name="rooms" required class="input-glass">
+                    </div>
+                    <div class="form-group">
+                        <label>Bathrooms</label>
+                        <input type="number" name="bathrooms" required class="input-glass">
+                    </div>
+                    <div class="form-group">
+                        <label>Age (Years)</label>
+                        <input type="number" name="age" required class="input-glass">
+                    </div>
+                </div>
+
+                <h4 class="form-section-title mt-4"><i class="fa-solid fa-camera"></i> Media & Documents</h4>
+                
+                <div class="form-group">
+                    <label>Main Image (Cover)</label>
+                    <input type="file" name="main_image" accept="image/*" required class="input-glass file-input">
+                </div>
+
+                <div class="documents-area">
+                    <p class="doc-note"><i class="fa-solid fa-shield-halved"></i> Verification Documents (Confidential)</p>
+                    
+                    <div class="form-group">
+                        <label>Title Deed (صك الملكية)</label>
+                        <input type="file" name="title_deed" required class="input-glass file-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ownership Proof (إثبات ملكية)</label>
+                        <input type="file" name="ownership_proof" required class="input-glass file-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Building License (Optional)</label>
+                        <input type="file" name="building_license" class="input-glass file-input">
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <button type="submit" class="btn-auth">Submit Property</button>
+                </div>
+            </form>
+
+       {% else %}
+            
+            <div class="login-warning-container">
+                <div class="lock-icon-box">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                
+                <h2 class="login-warning-title">Login Required</h2>
+                
+                <p class="login-warning-desc">
+                    You must be logged in to verify your identity and list a property on SaudiEstate.
+                </p>
+                
+                <a href="{% url 'users:login' %}?next={{ request.path }}" class="btn-auth btn-login-action">
+                    Login / Register
+                </a>
+                
+                <div class="back-home-wrapper">
+                    <a href="{% url 'main:home' %}" class="back-home-link">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
