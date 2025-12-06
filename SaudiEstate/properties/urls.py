@@ -12,4 +12,7 @@ urlpatterns = [
     path('verify/<int:pk>/<str:action>/', views.verify_property, name='verify_property'),
     path('all/', views.all_properties, name='all_properties'),
     path('<int:pk>/edit/', views.edit_property, name='edit_property'),
+    path('<int:pk>/book-visit/', views.book_visit, name='book_visit'),
+    path('visits/', views.my_visit_requests, name='my_visit_requests'),
+    path('visits/handle/<int:request_id>/<str:action>/', views.handle_visit_request, name='handle_visit_request'),
 ]

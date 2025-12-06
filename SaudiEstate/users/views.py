@@ -4,8 +4,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import User
 from django.contrib.auth.decorators import login_required
-from properties.models import Property, Favorite
-from inquiries.models import Inquiry, VisitRequest 
+from properties.models import Property, Favorite, VisitRequest
+from inquiries.models import Inquiry 
 from django.views.decorators.csrf import csrf_protect
 
 

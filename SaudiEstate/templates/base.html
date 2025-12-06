@@ -48,6 +48,11 @@
                 <li><a href="{% url 'main:home' %}">Home</a></li>
                 <li><a href="{% url 'properties:all_properties' %}">Properties</a></li>
                 <li><a href="{% url 'main:about' %}">About</a></li>
+                {% if user.is_authenticated %}
+                <a href="{% url 'properties:my_visit_requests' %}" class="btn-circle" title="My Visits">
+                <i class="fa-regular fa-calendar-check"></i>
+                </a>
+                {% endif %}
             </ul>
 
             <div class="nav-right">

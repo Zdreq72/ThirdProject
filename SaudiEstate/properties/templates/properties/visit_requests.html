@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Manage Visits{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 140px; padding-bottom: 60px; max-width: 1100px; margin: 0 auto; padding-left:20px; padding-right:20px;">
+
+    <h3 style="color:#0d3c3c; margin-bottom: 20px;">Incoming Requests (Properties You Own)</h3>
+    
+    {% if incoming_requests %}
+    <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse: collapse; background:white; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+            <thead style="background:#f4f4f4;">
+                <tr>
+                    <th style="padding:15px; text-align:left;">Property</th>
+                    <th style="padding:15px; text-align:left;">Requester</th>
+                    <th style="padding:15px; text-align:left;">Date/Time</th>
+                    <th style="padding:15px; text-align:left;">Status</th>
+                    <th style="padding:15px; text-align:left;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in incoming_requests %}
+                <tr style="border-bottom:1px solid #eee;">
+                    <td style="padding:15px;">{{ req.property.title }}</td>
+                    <td style="padding:15px;">{{ req.requester.username }}</td>
+                    <td style="padding:15px;">{{ req.visit_date }} <br> <small style="color:#666;">{{ req.visit_time }}</small></td>
+                    <td style="padding:15px;">
+                        {% if req.status == 'approved' %}
+                            <span style="color:green; font-weight:bold;">Approved</span>
+                        {% elif req.status == 'rejected' %}
+                            <span style="color:red; font-weight:bold;">Rejected</span>
+                        {% else %}
+                            <span style="color:orange; font-weight:bold;">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding:15px;">
+                        {% if req.status == 'pending' %}
+                            <a href="{% url 'properties:handle_visit_request' req.id 'approve' %}" style="color:green; margin-right:10px; font-weight:600; text-decoration:none;">Approve</a>
+                            <a href="{% url 'properties:handle_visit_request' req.id 'reject' %}" style="color:red; font-weight:600; text-decoration:none;">Reject</a>
+                        {% else %}
+                            <span style="color:#999;">Done</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p style="color:#777;">No incoming requests.</p>
+    {% endif %}
+
+    <hr style="margin: 50px 0; border:0; border-top:1px solid #ddd;">
+
+    <h3 style="color:#0d3c3c; margin-bottom: 20px;">My Sent Requests</h3>
+    
+    {% if my_requests %}
+    <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse: collapse; background:white; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+            <thead style="background:#f4f4f4;">
+                <tr>
+                    <th style="padding:15px; text-align:left;">Property</th>
+                    <th style="padding:15px; text-align:left;">Date/Time</th>
+                    <th style="padding:15px; text-align:left;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in my_requests %}
+                <tr style="border-bottom:1px solid #eee;">
+                    <td style="padding:15px;">{{ req.property.title }}</td>
+                    <td style="padding:15px;">{{ req.visit_date }} <br> <small style="color:#666;">{{ req.visit_time }}</small></td>
+                    <td style="padding:15px;">
+                        {% if req.status == 'approved' %}
+                            <span style="color:green; font-weight:bold;">Approved</span>
+                        {% elif req.status == 'rejected' %}
+                            <span style="color:red; font-weight:bold;">Rejected</span>
+                        {% else %}
+                            <span style="color:orange; font-weight:bold;">Pending</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p style="color:#777;">You haven't booked any visits yet.</p>
+    {% endif %}
+
+</div>
+{% endblock %}

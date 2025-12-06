@@ -272,7 +272,7 @@ html {
 
     background:
         linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2)),
-        url('../images/img.jpg');
+        url('../images/image copy.png');
 
     background-position: center;
     background-size: cover;
@@ -282,7 +282,7 @@ html {
     align-items: center;
     justify-content: center;
     animation: fadeIn 1.5s ease-out;
-    color: #093636;
+    color: #ffffff;
 }
 
 

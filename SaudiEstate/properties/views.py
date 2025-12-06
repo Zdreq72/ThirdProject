@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Property
+from .models import Property, VisitRequest
 from django.db.models import Q
 from .models import Favorite
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import send_mail
 from django.conf import settings
 from inquiries.models import Inquiry, InquiryReply
+from datetime import datetime, timedelta, date ,time
 
 
 
@@ -223,3 +224,127 @@ def edit_property(request, pk):
         return redirect('users:profile')
 
     return render(request, 'properties/edit_property.html', {"property": property_obj})
+
+
+
+@login_required
+def book_visit(request, pk):
+    property_obj = get_object_or_404(Property, pk=pk)
+    
+    if request.method == 'POST':
+        if request.user == property_obj.owner:
+            messages.error(request, "You cannot book a visit for your own property.")
+            return redirect('properties:detail', pk=pk)
+
+        visit_date_str = request.POST.get('visit_date', '').strip()
+        visit_time_str = request.POST.get('visit_time', '').strip()
+
+        try:
+            visit_date = datetime.strptime(visit_date_str, "%Y-%m-%d").date()
+            
+            try:
+                visit_time = datetime.strptime(visit_time_str, "%H:%M").time()
+            except ValueError:
+                visit_time = datetime.strptime(visit_time_str, "%H:%M:%S").time()
+                
+        except ValueError:
+            messages.error(request, "Invalid date or time format.")
+            return redirect('properties:detail', pk=pk)
+            
+        request_datetime = datetime.combine(visit_date, visit_time)
+        if request_datetime < datetime.now():
+             messages.error(request, "Cannot book a visit in the past.")
+             return redirect('properties:detail', pk=pk)
+
+        start_window = (datetime.combine(date.today(), visit_time) - timedelta(hours=1)).time()
+        end_window = (datetime.combine(date.today(), visit_time) + timedelta(hours=1)).time()
+
+        conflict = VisitRequest.objects.filter(
+            property=property_obj,
+            visit_date=visit_date,
+            status='approved',
+            visit_time__range=(start_window, end_window)
+        ).exists()
+
+        if conflict:
+            messages.error(request, "This time slot is already booked. Please choose another time.")
+            return redirect('properties:detail', pk=pk)
+
+        VisitRequest.objects.create(
+            requester=request.user,
+            property=property_obj,
+            visit_date=visit_date,
+            visit_time=visit_time,
+            status='pending'
+        )
+        
+        subject = f"New Visit Request: {property_obj.title}"
+        msg = f"User {request.user.username} wants to visit on {visit_date} at {visit_time}.\nPlease check your dashboard to approve or reject."
+        send_mail(subject, msg, settings.EMAIL_HOST_USER, [property_obj.owner.email], fail_silently=True)
+
+        messages.success(request, "Visit request sent! Waiting for owner approval.")
+        return redirect('properties:detail', pk=pk)
+
+    return redirect('properties:detail', pk=pk)
+
+
+
+@login_required
+def my_visit_requests(request):
+    incoming_requests = VisitRequest.objects.filter(property__owner=request.user).order_by('-created_at')
+    my_requests = VisitRequest.objects.filter(requester=request.user).order_by('-created_at')
+
+    return render(request, 'properties/visit_requests.html', {
+        'incoming_requests': incoming_requests,
+        'my_requests': my_requests
+    })
+
+
+@login_required
+def handle_visit_request(request, request_id, action):
+    visit_req = get_object_or_404(VisitRequest, pk=request_id, property__owner=request.user)
+    
+    requester_email = visit_req.requester.email
+    prop_title = visit_req.property.title
+
+    if action == 'approve':
+        start_window = (datetime.combine(date.today(), visit_req.visit_time) - timedelta(hours=1)).time()
+        end_window = (datetime.combine(date.today(), visit_req.visit_time) + timedelta(hours=1)).time()
+        
+        conflict = VisitRequest.objects.filter(
+            property=visit_req.property,
+            visit_date=visit_req.visit_date,
+            status='approved',
+            visit_time__range=(start_window, end_window)
+        ).exclude(pk=visit_req.pk).exists()
+
+        if conflict:
+            messages.error(request, "Cannot approve: Conflict with another approved visit.")
+            return redirect('properties:my_visit_requests')
+
+        visit_req.status = 'approved'
+        visit_req.save()
+        
+        send_mail(
+            f"Visit Approved: {prop_title}",
+            f"Your visit for {prop_title} on {visit_req.visit_date} at {visit_req.visit_time} is APPROVED.",
+            settings.EMAIL_HOST_USER,
+            [requester_email],
+            fail_silently=True
+        )
+        messages.success(request, "Request approved.")
+
+    elif action == 'reject':
+        visit_req.status = 'rejected'
+        visit_req.save()
+        
+        send_mail(
+            f"Visit Rejected: {prop_title}",
+            f"Sorry, your visit request for {prop_title} was rejected.",
+            settings.EMAIL_HOST_USER,
+            [requester_email],
+            fail_silently=True
+        )
+        messages.warning(request, "Request rejected.")
+
+    return redirect('properties:my_visit_requests')

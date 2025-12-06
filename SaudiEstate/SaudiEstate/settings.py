@@ -148,10 +148,3 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-
-
-# في آخر ملف settings.py
-print("--- DEBUG EMAIL SETTINGS ---")
-print("User:", EMAIL_HOST_USER)
-print("Password Loaded?", EMAIL_HOST_PASSWORD is not None)
-print("----------------------------")

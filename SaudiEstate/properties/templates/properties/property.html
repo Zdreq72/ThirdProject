@@ -259,6 +259,44 @@
         </button>
     </div>
 </div>
+{% if request.user.is_authenticated %}
+<div class="inquiry-box">
+    <form method="POST" action="{% url 'inquiries:send' property.id %}">
+        {% csrf_token %}
+        <textarea name="message" placeholder="Write your message..." required></textarea>
+        <button type="submit">Send Inquiry</button>
+    </form>
+</div>
+{% else %}
+<div class="inquiry-box">
+    <p>Please <a href="{% url 'users:login' %}?next={{ request.path }}">log in</a> to send an inquiry.</p>
+</div>
+{% endif %}
+
+<div class="visit-box" style="background: #fff; padding: 20px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+    <h3 style="color: #0d3c3c; margin-bottom: 15px;"><i class="fa-regular fa-calendar-check"></i> Schedule a Visit</h3>
+    
+    {% if user.is_authenticated %}
+        {% if user != property.owner %}
+            <form action="{% url 'properties:book_visit' property.pk %}" method="POST">
+                {% csrf_token %}
+                <div style="margin-bottom: 10px;">
+                    <label style="display:block; font-weight:500; margin-bottom:5px;">Date</label>
+                    <input type="date" name="visit_date" required class="input-glass" style="width:100%;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; font-weight:500; margin-bottom:5px;">Time</label>
+                    <input type="time" name="visit_time" required class="input-glass" style="width:100%;">
+                </div>
+                <button type="submit" class="btn-auth" style="border-radius:8px;">Request Visit</button>
+            </form>
+        {% else %}
+            <p style="color:#777;">You represent this property.</p>
+        {% endif %}
+    {% else %}
+        <p>Please <a href="{% url 'users:login' %}?next={{ request.path }}" style="color:#009688; font-weight:bold;">Log in</a> to book a visit.</p>
+    {% endif %}
+</div>
 
 
 {% if related_properties %}
@@ -271,13 +309,6 @@
     </div>
 </div>
 
-<div class="inquiry-box">
-    <form method="POST" action="{% url 'inquiries:send' property.id %}">
-        {% csrf_token %}
-        <textarea name="message" placeholder="Write your message..." required></textarea>
-        <button type="submit">Send Inquiry</button>
-    </form>
-</div>
 {% endif %}
 
 

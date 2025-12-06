@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Inquiry, InquiryReply, VisitRequest
+from .models import Inquiry, InquiryReply
+
 
 admin.site.register(Inquiry)
-admin.site.register(VisitRequest)
 admin.site.register(InquiryReply)
