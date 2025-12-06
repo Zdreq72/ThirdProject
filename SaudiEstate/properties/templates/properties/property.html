@@ -6,10 +6,6 @@
 {% block content %}
 <div class="property-detail-container">
 
-
-
-
-
     <div class="prop-breadcrumb">
         <a href="{% url 'main:home' %}"><i class="fa-solid fa-house"></i></a>
         <span>›</span>
@@ -19,9 +15,6 @@
         <span>›</span>
         <span class="current">{{ property.title }}</span>
     </div>
-
-
-
 
     <div class="prop-gallery">
         <div class="gallery-main" onclick="openModal(); currentSlide(1)" style="cursor: pointer;">
@@ -60,7 +53,8 @@
         </div>
 
         <a href="{% url 'properties:toggle_favorite' property.pk %}" class="fav-btn">
-            <span class="material-icons">
+            <span class="material-icons" id="fav-icon-{{ property.pk }}"
+                onclick="toggleFavorite(event, {{ property.pk }})">
                 {% if is_favorited %}
                 favorite
                 {% else %}
@@ -68,10 +62,6 @@
                 {% endif %}
             </span>
         </a>
-
-
-
-
 
         <div class="owner-card-display">
             <div class="owner-avatar">
@@ -123,7 +113,6 @@
                 </div>
             </div>
 
-
             <div class="detail-item">
                 <i class="fa-solid fa-city detail-icon"></i>
                 <div class="detail-text">
@@ -167,8 +156,6 @@
                 </div>
             </div>
 
-
-
             <div class="detail-item">
                 <i class="fa-regular fa-calendar detail-icon"></i>
                 <div class="detail-text">
@@ -176,8 +163,6 @@
                     <span class="value">{{ property.age }} Years</span>
                 </div>
             </div>
-
-
         </div>
 
         <hr class="divider">
@@ -190,6 +175,7 @@
     </div>
 
 </div>
+
 <div id="myModal" class="modal">
     <span class="close cursor" onclick="closeModal()">&times;</span>
     <div class="modal-content">
@@ -212,6 +198,69 @@
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
 </div>
+
+<div class="inquiry-section">
+    <h3 class="inquiry-title">Inquiries ({{ inquiries.count }})</h3>
+
+    <div class="inquiry-list">
+        {% for inquiry in inquiries %}
+        <div class="inquiry-item">
+            <div class="inquiry-header">
+                <span class="from">{{ inquiry.sender.username }}:</span>
+                <span class="date">{{ inquiry.created_at|date:"M d, Y - h:i a" }}</span>
+            </div>
+
+            <p class="msg">{{ inquiry.message }}</p>
+            {% if request.user == inquiry.sender or request.user == property.owner %}
+            <form action="{% url 'inquiries:delete_inquiry' inquiry.id %}" method="POST" class="d-inline">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-danger"
+                    onclick="return confirm('Are you sure you want to delete this comment?');">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </form>
+            {% endif %}
+
+
+            {% for reply in inquiry.replies.all %}
+            <div class="reply-item">
+                <div class="reply-header">
+                    <span class="reply-from">Owner:</span>
+                    <span class="reply-date">{{ reply.created_at|date:"M d, Y - h:i a" }}</span>
+                </div>
+                <p class="reply-text">{{ reply.message }}</p>
+                {% if request.user == reply.sender %}
+                <form action="{% url 'inquiries:delete_reply' reply.id %}" method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this reply?');">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+
+            {% if request.user.is_authenticated and request.user.id == property.owner.id %}
+            <form method="POST" action="{% url 'inquiries:reply' inquiry.id %}" class="reply-form">
+                {% csrf_token %}
+                <input type="text" name="reply" placeholder="Write a reply..." required>
+                <button>Reply</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button id="show-more-inquiries-btn" class="btn btn-primary"
+            style="display: none; border-radius: 50px; padding: 8px 25px; cursor: pointer;">
+            Show all inquiries <i class="fa-solid fa-chevron-down ml-2"></i>
+        </button>
+    </div>
+</div>
+
+
 {% if related_properties %}
 <div class="related-section">
     <h3 class="section-heading">You might also like</h3>
@@ -222,9 +271,16 @@
     </div>
 </div>
 
-
-
+<div class="inquiry-box">
+    <form method="POST" action="{% url 'inquiries:send' property.id %}">
+        {% csrf_token %}
+        <textarea name="message" placeholder="Write your message..." required></textarea>
+        <button type="submit">Send Inquiry</button>
+    </form>
+</div>
 {% endif %}
+
+
 <script>
     function openModal() {
         document.getElementById("myModal").style.display = "block";
@@ -280,14 +336,49 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'added') {
-                    favIcon.innerHTML = '<i class="material-icons" style="color:red;">favorite</i>';
+                    favIcon.innerHTML = 'favorite';
+                    favIcon.style.color = "red";
                 } else if (data.status === 'removed') {
-                    favIcon.innerHTML = '<i class="material-icons">favorite_border</i>';
+                    favIcon.innerHTML = 'favorite_border';
+                    favIcon.style.color = "";
                 }
             })
             .catch(error => console.error('Error:', error));
     }
+</script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const items = document.querySelectorAll(".inquiry-item");
+        const btn = document.getElementById("show-more-inquiries-btn");
+        const limit = 3;
+
+        if (items.length > limit) {
+            btn.style.display = "inline-block";
+
+            for (let i = limit; i < items.length; i++) {
+                items[i].style.display = "none";
+            }
+        }
+
+        btn.addEventListener("click", function () {
+            const isExpanded = btn.getAttribute("data-expanded") === "true";
+
+            if (isExpanded) {
+                for (let i = limit; i < items.length; i++) {
+                    items[i].style.display = "none";
+                }
+                btn.innerHTML = 'Show all inquiries <i class="fa-solid fa-chevron-down ml-2"></i>';
+                btn.setAttribute("data-expanded", "false");
+            } else {
+                items.forEach(item => {
+                    item.style.display = "block";
+                });
+                btn.innerHTML = 'Show less <i class="fa-solid fa-chevron-up ml-2"></i>';
+                btn.setAttribute("data-expanded", "true");
+            }
+        });
+    });
 </script>
 
 {% endblock %}

@@ -6,6 +6,7 @@ from .models import User
 from django.contrib.auth.decorators import login_required
 from properties.models import Property, Favorite
 from inquiries.models import Inquiry, VisitRequest 
+from django.views.decorators.csrf import csrf_protect
 
 
 
@@ -111,10 +112,11 @@ def user_profile(request):
     user = request.user
 
     my_properties = Property.objects.filter(owner=user)
-
     favorites = Favorite.objects.filter(user=user).select_related("property")
 
     inquiries = Inquiry.objects.filter(sender=user).select_related("property")
+
+    received_inquiries = Inquiry.objects.filter(property__owner=user).select_related("property", "sender")
 
     visit_requests = VisitRequest.objects.filter(requester=user).select_related("property")
 
@@ -123,12 +125,14 @@ def user_profile(request):
         "my_properties": my_properties,
         "favorites": favorites,
         "inquiries": inquiries,
+        "received_inquiries": received_inquiries,  
         "visit_requests": visit_requests,
     }
 
     return render(request, "users/user_profile.html", context)
 
 
+@csrf_protect
 @login_required
 def edit_profile(request):
     user = request.user
@@ -163,4 +167,15 @@ def edit_profile(request):
         return redirect('users:profile')
 
     return render(request, 'users/edit_profile.html', {"user": user})
+
+
+def profile(request):
+    inquiries_sent = Inquiry.objects.filter(sender=request.user)
+    
+    received_inquiries = Inquiry.objects.filter(property__owner=request.user)
+
+    return render(request, "users/profile.html", {
+        "inquiries": inquiries_sent,
+        "received_inquiries": received_inquiries,
+    })    
 

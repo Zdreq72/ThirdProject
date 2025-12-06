@@ -23,7 +23,7 @@
 </section>
 
 
-<section class="about-preview">
+<section class="about-preview section-bg-1">
 
     <div class="about-container">
 
@@ -57,13 +57,15 @@
 
 
 
-<div class="search-wrapper">
-    <input type="text" class="search-input" placeholder="Search location...">
-    <button class="search-btn">🔍 Search</button>
-</div>
 
 
-<section class="featured-section">
+<section class="cta-section section-bg-3">
+
+    <div class="search-wrapper">
+        <input type="text" class="search-input" placeholder="Search location...">
+        <button class="search-btn">🔍 Search</button>
+    </div>
+
 
     <h2 class="section-title">Featured Properties</h2>
     <a href="{% url 'properties:all_properties' %}" class="view-all-btn">
@@ -73,7 +75,7 @@
     <div class="properties-grid">
 
         {% for property in properties %}
-            {% include 'properties/card.html' %}
+        {% include 'properties/card.html' %}
 
         {% empty %}
         <p>No featured properties available at the moment.</p>

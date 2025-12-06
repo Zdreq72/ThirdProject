@@ -44,16 +44,11 @@
             <div class="grid-cards">
                 {% for property in my_properties %}
                 {% include 'properties/card.html' %}
-
-
                 {% endfor %}
-
             </div>
             {% else %}
             <p class="empty">You haven't listed any properties yet.</p>
-
             {% endif %}
-
         </section>
 
 
@@ -119,6 +114,30 @@
             <p class="empty">You haven't sent any inquiries.</p>
             {% endif %}
         </section>
+
+
+        <section class="section-box">
+            <h3 class="section-title">
+                <span class="material-icons-outlined section-icon">mail</span>
+                Received Inquiries
+            </h3>
+
+            {% if received_inquiries %}
+            <div class="inquiry-list">
+                {% for q in received_inquiries %}
+                <div class="inquiry-item">
+                    <h4>{{ q.property.title }}</h4>
+                    <p>{{ q.message }}</p>
+                    <span class="inquiry-date">{{ q.created_at|date:"M d, Y" }}</span>
+                    <p class="from-user">From: {{ q.sender.username }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty">No inquiries received yet.</p>
+            {% endif %}
+        </section>
+
 
     </main>
 </div>

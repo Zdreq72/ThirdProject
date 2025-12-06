@@ -1,8 +1,11 @@
 .profile-wrapper {
     display: flex;
     gap: 30px;
-    padding: 40px 20px;
+    padding-top: 100px;
+    padding-bottom: 10px;
+
 }
+
 
 .profile-card {
     width: 280px;
@@ -12,6 +15,9 @@
     box-shadow: 0 5px 20px #00000015;
     height: fit-content;
 }
+
+
+
 
 .profile-img-box {
     display: flex;
@@ -175,4 +181,47 @@
 
 .save-btn:hover {
     background: #0a6f62;
+}
+
+.inquiry-box {
+    margin-top: 30px;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8e8;
+}
+
+.inquiry-box textarea {
+    width: 100%;
+    height: 140px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #009688;
+    outline: none;
+    resize: none;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+
+.inquiry-box textarea:focus {
+    border-color: #006f58;
+    box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.15);
+}
+
+.inquiry-box button {
+    margin-top: 12px;
+    background: #009688;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.inquiry-box button:hover {
+    background: #007a6d;
+    transform: translateY(-2px);
 }

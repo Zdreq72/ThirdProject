@@ -26,3 +26,15 @@ class VisitRequest(models.Model):
 
     def __str__(self):
         return f"Visit request by {self.requester} for {self.property}"
+    
+
+
+    
+class InquiryReply(models.Model):
+    inquiry = models.ForeignKey(Inquiry, on_delete=models.CASCADE, related_name="replies")
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField(null=False, blank=False)   
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Reply by {self.sender}"

@@ -6,6 +6,8 @@ from .models import Favorite
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import send_mail
 from django.conf import settings
+from inquiries.models import Inquiry, InquiryReply
+
 
 
 def property_detail(request, pk):
@@ -14,6 +16,10 @@ def property_detail(request, pk):
     is_favorited = False
     if request.user.is_authenticated:
         is_favorited = property.is_favorited_by(request.user)
+
+    inquiries = property.inquiries.select_related("sender").order_by("-created_at")
+    replies = InquiryReply.objects.filter(inquiry__property=property).order_by('created_at')
+
 
     related_properties = Property.objects.filter(
         Q(city=property.city) | 
@@ -24,10 +30,11 @@ def property_detail(request, pk):
     context = {
         'property': property,
         'related_properties': related_properties,
+        'inquiries': inquiries,
+        'replies': replies,  
         'is_favorited': is_favorited,
     }
     return render(request, 'properties/property.html', context)
-
 
 @login_required
 def toggle_favorite(request, pk):
@@ -185,11 +192,13 @@ def all_properties(request):
     return render(request, 'properties/all_properties.html', {
         'properties': properties,
     })
-
-
 @login_required
 def edit_property(request, pk):
-    property_obj = get_object_or_404(Property, pk=pk, owner=request.user)
+
+    if request.user.is_staff:
+        property_obj = get_object_or_404(Property, pk=pk)
+    else:
+        property_obj = get_object_or_404(Property, pk=pk, owner=request.user)
 
     if request.method == 'POST':
         property_obj.title = request.POST.get('title')
