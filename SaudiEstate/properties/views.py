@@ -290,7 +290,7 @@ def book_visit(request, pk):
         conflict = VisitRequest.objects.filter(
             property=property_obj,
             visit_date=visit_date,
-            status='approved',
+            status='pending',
             visit_time__range=(start_window, end_window)
         ).exists()
 
@@ -374,5 +374,18 @@ def handle_visit_request(request, request_id, action):
             fail_silently=True
         )
         messages.warning(request, "Request rejected.")
+
+    return redirect('properties:my_visit_requests')
+
+
+
+def delete_visit_request(request, request_id):
+    visit_req = get_object_or_404(VisitRequest, pk=request_id)
+    
+    if request.user == visit_req.requester or request.user == visit_req.property.owner:
+        visit_req.delete()
+        messages.success(request, "Visit request deleted.")
+    else:
+        messages.error(request, "You do not have permission to delete this request.")
 
     return redirect('properties:my_visit_requests')

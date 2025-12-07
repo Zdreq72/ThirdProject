@@ -15,4 +15,5 @@ urlpatterns = [
     path('<int:pk>/book-visit/', views.book_visit, name='book_visit'),
     path('visits/', views.my_visit_requests, name='my_visit_requests'),
     path('visits/handle/<int:request_id>/<str:action>/', views.handle_visit_request, name='handle_visit_request'),
+    path('visits/delete/<int:request_id>/', views.delete_visit_request, name='delete_visit_request'),
 ]

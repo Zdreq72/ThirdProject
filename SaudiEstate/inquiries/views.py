@@ -1,9 +1,9 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Inquiry, InquiryReply
 from properties.models import Property
-
+from django.http import HttpResponse, HttpResponseForbidden
 
 @login_required
 def send_inquiry(request, pk):
